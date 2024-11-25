@@ -1,7 +1,9 @@
-body, html {
+html, body {
+    width: 100%;
     height: 100%;
-    margin: 0;
-    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 body {
@@ -9,6 +11,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#field {
+
 }
 
 #station {
@@ -31,13 +37,21 @@ body {
 }
 
 #top {
-    width: 50%;
+    width: 40%;
     height: 5px;
     background-color: #000;
 }
 
-#bottom {
+#barrel {
     width: 50%;
-    height: 5px;
+    height: 10px;
     background-color: red;
+}
+
+/* Where bullet is held in front of barrel */
+#shellEnclosure {
+    width: 20%;
+    height: 10px;
+    background-color: purple;
+    z-index: 200;
 }
