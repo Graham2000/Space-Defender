@@ -20,6 +20,12 @@ function isElementOffScreen(element) {
         rect.top > window.innerHeight
     );
 }
+function visible(elm) {
+    let rect = elm.getBoundingClientRect();
+    let viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+    return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
     let deg = 0;
@@ -110,6 +116,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                     notified = true;
                     window.location='newGame.html';
+                } else if (!visible(ec[i])) {
+                    document.body.removeChild(ec[i]);
                 }
             }
 
