@@ -56,6 +56,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 pos += 10;
             }, 1);
 
+            // Animate stock
+            let stock = document.getElementById('top');
+            stock.style.transform = 'translate(10px,0px)'
+            setTimeout((() => {
+                stock.style.transform = 'translate(0px,0px)'
+            }),100);
+
             if (isElementOffScreen(bullet)) {
                 clearInterval(int1);
             }
@@ -64,67 +71,49 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         cannon.style.transform = `rotate(${deg}deg)`;
     });
+    let notified = false;
 
-    // TODO: generate enemy craft and random coords
-    setInterval( (() => {
+    setInterval((() => {
         let eCraft = document.createElement("img");
-        setTimeout(() => {
-            eCraft.style.position = "fixed";
-            eCraft.style.left = "0";
-            eCraft.style.top = '0';
-            eCraft.style.width = "5%";
-            eCraft.style.height = "5%";
-            eCraft.style.zIndex = '1000';
-            eCraft.src = 'C:/Users/graha/Downloads/ufo.png';
-            document.body.appendChild(eCraft);
-        }, 1000);
+        eCraft.style.position = "fixed";
+        eCraft.style.top= "0";
+        eCraft.style.left = '0';
+        eCraft.style.width = "5%";
+        eCraft.style.height = "5%";
+        eCraft.style.zIndex = '50000';
+        eCraft.src = 'img/ufo.png';
 
-        let pos = 0;
+        eCraft.className = 'eCrafts';
+        document.body.appendChild(eCraft);
+
         setInterval((() => {
-            let posX = pos;
-            let posY = pos;
-            eCraft.style.transform = `translate(${posX+'px'}, ${posY+'px'})`;
-            for (let i = 0; i < document.getElementsByClassName('bullets').length; i++) {
-                if (isOverlapping(document.getElementsByClassName('bullets')[i], eCraft)) {
-                    document.body.removeChild(eCraft);
+
+            let ec = document.getElementsByClassName('eCrafts');
+            for(let i = 0; i < ec.length; i++) {
+                // get current coords
+                let currX = ec[i].getBoundingClientRect().x;
+                let currY = ec[i].getBoundingClientRect().y;
+                // and increment
+                xPos = currX + 3.5;
+                yPos = currY + 2;
+                ec[i].style.transform = "translate("+xPos+"px,"+yPos+"px)";
+
+                for (let i = 0; i < document.getElementsByClassName('bullets').length; i++) {
+                    if (isOverlapping(document.getElementsByClassName('bullets')[i], eCraft)) {
+                        document.body.removeChild(eCraft);
+                    }
+                }
+
+                if (isOverlapping(ec[i], document.getElementById('station'))) {
+                    if (!notified) {
+                        alert('GAME OVER');
+                    }
+                    notified = true;
+                    window.location='newGame.html';
                 }
             }
-            pos += 10;
+
         }), 300);
-    }), 5000);
 
-
-    setInterval( (() => {
-        let eCraft = document.createElement("img");
-        setTimeout(() => {
-            eCraft.style.position = "fixed";
-            eCraft.style.right= "0";
-            eCraft.style.top = '0';
-            eCraft.style.width = "5%";
-            eCraft.style.height = "5%";
-            eCraft.style.zIndex = '1000';
-            eCraft.src = '/img/ufo.png';
-            document.body.appendChild(eCraft);
-        }, 1000);
-
-        // let pos = window.innerHeight;
-        let posX = document.body.getBoundingClientRect().top;
-        let posY = document.body.getBoundingClientRect().right;
-        console.log(posX, posY);
-        setInterval((() => {
-            eCraft.style.transform = `translate(${posX+'px'}, ${posY+'px'})`;
-            for (let i = 0; i < document.getElementsByClassName('bullets').length; i++) {
-                if (isOverlapping(document.getElementsByClassName('bullets')[i], eCraft)) {
-                    document.body.removeChild(eCraft);
-                }
-            }
-            posX -= 10;
-            posY -= 10;
-        }), 300);
-    }), 5000);
-
-    // TODO: If eCraft hits station
-        // game over
-
-
+    }), 5000)
 });
