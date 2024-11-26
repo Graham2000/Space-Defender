@@ -77,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
             eCraft.style.zIndex = '1000';
             eCraft.src = 'C:/Users/graha/Downloads/ufo.png';
             document.body.appendChild(eCraft);
-
         }, 1000);
 
         let pos = 0;
@@ -94,7 +93,38 @@ document.addEventListener("DOMContentLoaded", () => {
         }), 300);
     }), 5000);
 
+
+    setInterval( (() => {
+        let eCraft = document.createElement("img");
+        setTimeout(() => {
+            eCraft.style.position = "fixed";
+            eCraft.style.right= "0";
+            eCraft.style.top = '0';
+            eCraft.style.width = "5%";
+            eCraft.style.height = "5%";
+            eCraft.style.zIndex = '1000';
+            eCraft.src = '/img/ufo.png';
+            document.body.appendChild(eCraft);
+        }, 1000);
+
+        // let pos = window.innerHeight;
+        let posX = document.body.getBoundingClientRect().top;
+        let posY = document.body.getBoundingClientRect().right;
+        console.log(posX, posY);
+        setInterval((() => {
+            eCraft.style.transform = `translate(${posX+'px'}, ${posY+'px'})`;
+            for (let i = 0; i < document.getElementsByClassName('bullets').length; i++) {
+                if (isOverlapping(document.getElementsByClassName('bullets')[i], eCraft)) {
+                    document.body.removeChild(eCraft);
+                }
+            }
+            posX -= 10;
+            posY -= 10;
+        }), 300);
+    }), 5000);
+
     // TODO: If eCraft hits station
         // game over
+
 
 });
